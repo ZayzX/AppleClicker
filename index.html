@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="pomme.png" type="image/x-icon">
+    <title>AppleClicker</title>
+</head>
+<body>
+    
+    <div class="containersWrapper">
+        <div class="clickerContainer">
+            <p class="title">Clicker Section</p>
+            <p id="CurrentApple">Current Apple: 0 🍎</p>
+            <p id="totalApple">Total Apple: 0 🍎</p>
+            <br>
+            <button onclick="ClickApple()"><img src="pomme.png" alt="Pomme 🍎" height="250" width="250"></button>
+        </div>
+        <div class="shopContainer">
+
+        </div>
+        <div class="upgradeContainer">
+
+        </div>
+    </div>
+    
+    <audio id="sound" src="UISoundClick.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+body {
+    background-color: #f0f0f0;
+    background-image:
+        linear-gradient(#d8d8d8 1px, transparent 1px),
+        linear-gradient(90deg, #d8d8d8 1px, transparent 1px);
+    background-size: 30px 30px;
+    margin: 0;
+    padding: 0;
+    cursor: url('apple.png') 16 16, auto;
+}
+
+.containersWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 30px;
+    height: calc(100vh - 60px);
+}
+
+.clickerContainer {
+    flex: 1;
+    background-color: #d8d8d8;
+    border: black solid 3px;
+    border-radius: 25px;
+    padding: 15px;
+    text-align: center;
+}
+
+.clickerContainer button {
+    background-color: #f1f1f1;
+    border: black solid 2px;
+    border-radius: 25px;
+    cursor: url('green_apple.png') 16 16, auto;
+}
+
+.shopContainer {
+    flex: 1;
+    background-color: #d8d8d8;
+    border: black solid 3px;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+.upgradeContainer {
+    flex: 1;
+    background-color: #d8d8d8;
+    border: black solid 3px;
+    border-radius: 25px;
+    padding: 15px;
+}
+
+.title {
+    font-size: 45px;
+    font: bold;
+    text-decoration: underline;
+}
