@@ -14,14 +14,22 @@
             <p class="title">Clicker Section</p>
             <p id="CurrentApple">Current Apple: 0 🍎</p>
             <p id="totalApple">Total Apple: 0 🍎</p>
+            <p id="bonusText" class="bonus-text"></p>
             <br>
-            <button onclick="ClickApple()"><img src="pomme.png" alt="Pomme 🍎" height="250" width="250"></button>
+            <div class="button-container">
+                <button onclick="ClickApple()" class="main-button">
+                    <img src="pomme.png" alt="Pomme 🍎" height="250" width="250">
+                    <img id="goldenApple" src="golden_apple.png" alt="Golden Apple" class="golden-apple" style="display: none;">
+                </button>
+            </div>
         </div>
-        <div class="shopContainer">
-
+        <div class="buildingsContainer">
+            <p class="title">Buildings</p>
+            <div class="scrollBox" id="buildingsScrollBox"></div>
         </div>
         <div class="upgradeContainer">
-
+            <p class="title">Upgrades</p>
+            <div class="scrollBox" id="upgradesScrollBox"></div>
         </div>
     </div>
     

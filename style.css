@@ -33,12 +33,14 @@ body {
     cursor: url('green_apple.png') 16 16, auto;
 }
 
-.shopContainer {
+.buildingsContainer {
     flex: 1;
     background-color: #d8d8d8;
     border: black solid 3px;
     border-radius: 25px;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .upgradeContainer {
@@ -47,10 +49,110 @@ body {
     border: black solid 3px;
     border-radius: 25px;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
     font-size: 45px;
     font: bold;
     text-decoration: underline;
+}
+
+.scrollBox {
+    background-color: #f1f1f1;
+    border: black solid 2px;
+    border-radius: 15px;
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.building-item, .upgrade-item {
+    background-color: #e0e0e0;
+    border: black solid 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 8px 0;
+    cursor: url('green_apple.png') 16 16, auto;
+    transition: background-color 0.2s;
+}
+
+.building-item:hover {
+    background-color: #d0d0d0;
+}
+
+.building-item.disabled, .upgrade-item.disabled {
+    background-color: #cccccc;
+    cursor: url('green_apple.png') 16 16, auto;
+    opacity: 0.6;
+}
+
+.upgrade-item:hover:not(.disabled) {
+    background-color: #d0d0d0;
+}
+
+.upgrade-item.purchased {
+    background-color: #90EE90;
+    opacity: 0.7;
+    cursor: url('green_apple.png') 16 16, auto;
+}
+
+.item-name {
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+.item-description {
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.item-cost {
+    font-size: 14px;
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.item-owned {
+    font-size: 12px;
+    color: #5cb85c;
+}
+
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.main-button {
+    position: relative;
+}
+
+.bonus-text {
+    font-size: 18px;
+    color: #2ecc71;
+    font-weight: bold;
+    height: 25px;
+    min-height: 25px;
+}
+
+#goldenApple {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 20px;
+    right: 20px;
+    cursor: pointer !important;
+    filter: drop-shadow(0 0 10px #FFD700);
+    animation: goldenBounce 1s infinite;
+}
+
+@keyframes goldenBounce {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.1);
+    }
 }
