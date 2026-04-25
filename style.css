@@ -156,3 +156,31 @@ body {
         transform: translateY(-10px) scale(1.1);
     }
 }
+
+.save-buttons-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.save-button {
+    background-color: #4CAF50;
+    border: black solid 2px;
+    border-radius: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    cursor: url('green_apple.png') 16 16, auto;
+    transition: all 0.2s;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.save-button:active {
+    transform: scale(0.95);
+}

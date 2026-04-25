@@ -183,7 +183,7 @@ function claimGoldenApple() {
     const bonusType = Math.random() < 0.5;
     
     if (bonusType) {
-        const multiplier = 2 + Math.random() * 2; // 2-4x
+        const multiplier = 2 + Math.random() * 2;
         const bonusApples = totalApple * multiplier;
         currentApple += bonusApples;
         totalApple += bonusApples;
@@ -323,3 +323,82 @@ function scheduleGoldenApple() {
 scheduleGoldenApple();
 
 updateUI();
+
+function exportSave() {
+    const saveData = {
+        currentApple,
+        totalApple,
+        applePerClick,
+        productionPerSecond,
+        productionMultiplier,
+        buildings: buildings.map(b => ({
+            name: b.name,
+            owned: b.owned,
+            production: b.production,
+            baseCost: b.baseCost,
+            originalProduction: b.originalProduction
+        })),
+        upgrades: upgrades.map(u => ({
+            name: u.name,
+            purchased: u.purchased,
+            type: u.type
+        }))
+    };
+    
+    const json = JSON.stringify(saveData, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `AppleClicker_Save_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importSave() {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.click();
+    fileInput.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                const saveData = JSON.parse(event.target.result);
+                
+                currentApple = saveData.currentApple || 0;
+                totalApple = saveData.totalApple || 0;
+                applePerClick = saveData.applePerClick || 1;
+                productionPerSecond = saveData.productionPerSecond || 0;
+                productionMultiplier = saveData.productionMultiplier || 1;
+                
+                if (saveData.buildings) {
+                    saveData.buildings.forEach((savedBuilding, index) => {
+                        if (buildings[index]) {
+                            buildings[index].owned = savedBuilding.owned || 0;
+                            buildings[index].production = savedBuilding.production || buildings[index].originalProduction;
+                        }
+                    });
+                }
+                
+                if (saveData.upgrades) {
+                    saveData.upgrades.forEach((savedUpgrade, index) => {
+                        if (upgrades[index]) {
+                            upgrades[index].purchased = savedUpgrade.purchased || false;
+                        }
+                    });
+                }
+                
+                updateUI();
+                showBonusText('save loaded ! 📂');
+            } catch (error) {
+                showBonusText('Error : invalid file ❌');
+                console.error('Error in loading:', error);
+            }
+        };
+        reader.readAsText(file);
+    };
+}

@@ -22,6 +22,11 @@
                     <img id="goldenApple" src="golden_apple.png" alt="Golden Apple" class="golden-apple" style="display: none;">
                 </button>
             </div>
+            <div class="save-buttons-container">
+                <button onclick="exportSave()" class="save-button">📥 Export</button>
+                <button onclick="importSave()" class="save-button">📤 Import</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;">
+            </div>
         </div>
         <div class="buildingsContainer">
             <p class="title">Buildings</p>
