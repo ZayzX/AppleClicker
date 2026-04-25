@@ -5,10 +5,13 @@ let productionPerSecond = 0;
 let goldenAppleActive = false;
 let productionMultiplier = 1;
 let bonusTextTimeout = null;
+let timerInterval = null;
+let remainingTime = 0;
 
 let currentAppleP = document.getElementById("CurrentApple");
 let totalAppleP = document.getElementById("totalApple");
 let bonusTextP = document.getElementById("bonusText");
+let timerDisplayP = document.getElementById("timerDisplay");
 let soundClick = document.getElementById("sound");
 let buildingsScrollBox = document.getElementById("buildingsScrollBox");
 let upgradesScrollBox = document.getElementById("upgradesScrollBox");
@@ -195,10 +198,8 @@ function claimGoldenApple() {
         
         showBonusText(`Production x500 for 1 minute!`);
         
-        setTimeout(() => {
-            productionMultiplier = oldMultiplier;
-            showBonusText(`Production multiplier expired`);
-        }, 60000);
+        remainingTime = 60;
+        startTimer(oldMultiplier);
     }
     
     updateUI();
@@ -210,6 +211,32 @@ function showBonusText(text) {
     bonusTextTimeout = setTimeout(() => {
         bonusTextP.textContent = "";
     }, 3000);
+}
+
+function startTimer(oldMultiplier) {
+    timerDisplayP.style.display = "block";
+    updateTimerDisplay();
+    
+    if (timerInterval) clearInterval(timerInterval);
+    
+    timerInterval = setInterval(() => {
+        remainingTime--;
+        updateTimerDisplay();
+        
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            productionMultiplier = oldMultiplier;
+            timerDisplayP.style.display = "none";
+            showBonusText(`Production multiplier expired`);
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    timerDisplayP.textContent = `⏱️ Production boost: ${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
 function getActualCost(building) {

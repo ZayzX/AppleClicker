@@ -137,6 +137,28 @@ body {
     min-height: 25px;
 }
 
+.timer-display {
+    font-size: 20px;
+    color: #ff9800;
+    font-weight: bold;
+    background-color: #fff3e0;
+    border: 2px solid #ff9800;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 10px 0;
+    text-align: center;
+    animation: timerPulse 1s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
 #goldenApple {
     position: absolute;
     width: 80px;
