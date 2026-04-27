@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="pomme.png" type="image/x-icon">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="shortcut icon" href="img/pomme.png" type="image/x-icon">
     <title>AppleClicker</title>
 </head>
 <body>
@@ -19,14 +19,15 @@
             <br>
             <div class="button-container">
                 <button onclick="ClickApple()" class="main-button">
-                    <img src="pomme.png" alt="Pomme 🍎" height="250" width="250">
-                    <img id="goldenApple" src="golden_apple.png" alt="Golden Apple" class="golden-apple" style="display: none;">
+                    <img src="img/pomme.png" alt="Pomme 🍎" height="250" width="250">
+                    <img id="goldenApple" src="img/golden_apple.png" alt="Golden Apple" class="golden-apple" style="display: none;">
                 </button>
             </div>
             <div class="save-buttons-container">
                 <button onclick="exportSave()" class="save-button">📥 Export</button>
                 <button onclick="importSave()" class="save-button">📤 Import</button>
                 <input type="file" id="fileInput" accept=".json" style="display: none;">
+                <a href="https://ko-fi.com/zayzx"><button onclick="redirectToSite()" class="save-button danger-button">I NEED MONEY !!!</button></a>
             </div>
         </div>
         <div class="buildingsContainer">
@@ -39,7 +40,7 @@
         </div>
     </div>
     
-    <audio id="sound" src="UISoundClick.mp3"></audio>
-    <script src="script.js"></script>
+    <audio id="sound" src="sounds/UISoundClick.mp3"></audio>
+    <script src="js/script.js"></script>
 </body>
 </html>

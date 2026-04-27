@@ -6,7 +6,7 @@ body {
     background-size: 30px 30px;
     margin: 0;
     padding: 0;
-    cursor: url('apple.png') 16 16, auto;
+    cursor: url('../img/apple.png') 16 16, auto;
 }
 
 .containersWrapper {
@@ -30,7 +30,7 @@ body {
     background-color: #f1f1f1;
     border: black solid 2px;
     border-radius: 25px;
-    cursor: url('green_apple.png') 16 16, auto;
+    cursor: url('../img/green_apple.png') 16 16, auto;
 }
 
 .buildingsContainer {
@@ -74,7 +74,7 @@ body {
     border-radius: 10px;
     padding: 10px;
     margin: 8px 0;
-    cursor: url('green_apple.png') 16 16, auto;
+    cursor: url('../img/green_apple.png') 16 16, auto;
     transition: background-color 0.2s;
 }
 
@@ -84,7 +84,7 @@ body {
 
 .building-item.disabled, .upgrade-item.disabled {
     background-color: #cccccc;
-    cursor: url('green_apple.png') 16 16, auto;
+    cursor: url('../img/green_apple.png') 16 16, auto;
     opacity: 0.6;
 }
 
@@ -95,7 +95,7 @@ body {
 .upgrade-item.purchased {
     background-color: #90EE90;
     opacity: 0.7;
-    cursor: url('green_apple.png') 16 16, auto;
+    cursor: url('../img/green_apple.png') 16 16, auto;
 }
 
 .item-name {
@@ -194,7 +194,7 @@ body {
     font-size: 16px;
     font-weight: bold;
     color: rgb(0, 0, 0);
-    cursor: url('green_apple.png') 16 16, auto;
+    cursor: url('../img/green_apple.png') 16 16, auto;
     transition: all 0.2s;
 }
 
@@ -205,4 +205,26 @@ body {
 
 .save-button:active {
     transform: scale(0.95);
+}
+
+.danger-button {
+    background-color: #dc3545;
+    color: rgb(0, 0, 0);
+}
+
+.danger-button:hover {
+    background-color: #c82333;
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0px);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
 }
