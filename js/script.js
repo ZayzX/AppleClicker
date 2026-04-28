@@ -49,11 +49,15 @@ function loadDefaultResourcepack() {
 }
 
 function applyResourcepack() {
-    const appleImg = document.querySelector('.main-button img:first-child');
-    if (appleImg) appleImg.src = currentResourcepack.appleImage;
-    
+    const appleImg = document.getElementById('appleImg');
+    if (appleImg) {
+        appleImg.src = '';
+        appleImg.src = currentResourcepack.appleImage;
+    }
+
+    goldenAppleElement.src = '';
     goldenAppleElement.src = currentResourcepack.goldenAppleImage;
-    
+
     soundClick.src = currentResourcepack.sound;
     
     const defaultHotX = currentResourcepack.cursorDefaultHotspotX || 0;
@@ -144,11 +148,14 @@ function loadResourcepackFromZip(file) {
             
             const loadResource = (resourcePath, fieldName) => {
                 if (packData[fieldName]) {
-                    const promise = zip.file(packData[fieldName]).async('blob').then(blob => {
-                        const blobUrl = URL.createObjectURL(blob);
-                        resourcepackData[fieldName] = blobUrl;
-                    });
-                    filePromises.push(promise);
+                    const file = zip.file(packData[fieldName]);
+                    if (file) {
+                        const promise = file.async('blob').then(blob => {
+                            const blobUrl = URL.createObjectURL(blob);
+                            resourcepackData[fieldName] = blobUrl;
+                        });
+                        filePromises.push(promise);
+                    }
                 }
             };
             
