@@ -17,6 +17,168 @@ let buildingsScrollBox = document.getElementById("buildingsScrollBox");
 let upgradesScrollBox = document.getElementById("upgradesScrollBox");
 let goldenAppleElement = document.getElementById("goldenApple");
 
+let currentResourcepack = {
+    appleImage: "img/pomme.png",
+    goldenAppleImage: "img/golden_apple.png",
+    sound: "sounds/UISoundClick.mp3",
+    cursorDefault: "img/apple.png",
+    cursorDefaultHotspotX: 16,
+    cursorDefaultHotspotY: 16,
+    cursorInteractive: "img/green_apple.png",
+    cursorInteractiveHotspotX: 16,
+    cursorInteractiveHotspotY: 16,
+    favicon: "img/pomme.png"
+};
+
+function loadDefaultResourcepack() {
+    currentResourcepack = {
+        appleImage: "img/pomme.png",
+        goldenAppleImage: "img/golden_apple.png",
+        sound: "sounds/UISoundClick.mp3",
+        cursorDefault: "img/apple.png",
+        cursorDefaultHotspotX: 16,
+        cursorDefaultHotspotY: 16,
+        cursorInteractive: "img/green_apple.png",
+        cursorInteractiveHotspotX: 16,
+        cursorInteractiveHotspotY: 16,
+        favicon: "img/pomme.png"
+    };
+    applyResourcepack();
+    localStorage.removeItem("customResourcepack");
+    showBonusText("Default resourcepack loaded ✅");
+}
+
+function applyResourcepack() {
+    const appleImg = document.querySelector('.main-button img:first-child');
+    if (appleImg) appleImg.src = currentResourcepack.appleImage;
+    
+    goldenAppleElement.src = currentResourcepack.goldenAppleImage;
+    
+    soundClick.src = currentResourcepack.sound;
+    
+    const defaultHotX = currentResourcepack.cursorDefaultHotspotX || 0;
+    const defaultHotY = currentResourcepack.cursorDefaultHotspotY || 0;
+    if (currentResourcepack.cursorDefault) {
+        document.body.style.cursor = `url('${currentResourcepack.cursorDefault}') ${defaultHotX} ${defaultHotY}, auto`;
+    }
+    
+    const interactiveHotX = currentResourcepack.cursorInteractiveHotspotX || 0;
+    const interactiveHotY = currentResourcepack.cursorInteractiveHotspotY || 0;
+    if (currentResourcepack.cursorInteractive) {
+        const interactiveCursorStyle = `url('${currentResourcepack.cursorInteractive}') ${interactiveHotX} ${interactiveHotY}, auto`;
+        
+        let styleEl = document.getElementById('resourcepack-cursor-style');
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = 'resourcepack-cursor-style';
+            document.head.appendChild(styleEl);
+        }
+        styleEl.innerHTML = `
+            .clickerContainer button,
+            .building-item,
+            .upgrade-item,
+            .save-button,
+            #goldenApple {
+                cursor: ${interactiveCursorStyle} !important;
+            }
+        `;
+    }
+    
+    let favicon = document.querySelector("link[rel='shortcut icon']");
+    if (favicon) favicon.href = currentResourcepack.favicon;
+}
+
+function loadResourcepack() {
+    const fileInput = document.getElementById('resourcepackInput');
+    fileInput.click();
+    fileInput.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        if (file.type === 'application/zip' || file.name.endsWith('.zip')) {
+            loadResourcepackFromZip(file);
+        } else if (file.type === 'application/json' || file.name.endsWith('.json')) {
+            loadResourcepackFromJSON(file);
+        } else {
+            showBonusText('Error: Invalid file type (use .zip or .json) ❌');
+        }
+    };
+}
+
+function loadResourcepackFromJSON(file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        try {
+            const resourcepackData = JSON.parse(event.target.result);
+            
+            if (resourcepackData.appleImage) currentResourcepack.appleImage = resourcepackData.appleImage;
+            if (resourcepackData.goldenAppleImage) currentResourcepack.goldenAppleImage = resourcepackData.goldenAppleImage;
+            if (resourcepackData.sound) currentResourcepack.sound = resourcepackData.sound;
+            if (resourcepackData.cursorDefault) currentResourcepack.cursorDefault = resourcepackData.cursorDefault;
+            if (resourcepackData.cursorDefaultHotspotX !== undefined) currentResourcepack.cursorDefaultHotspotX = resourcepackData.cursorDefaultHotspotX;
+            if (resourcepackData.cursorDefaultHotspotY !== undefined) currentResourcepack.cursorDefaultHotspotY = resourcepackData.cursorDefaultHotspotY;
+            if (resourcepackData.cursorInteractive) currentResourcepack.cursorInteractive = resourcepackData.cursorInteractive;
+            if (resourcepackData.cursorInteractiveHotspotX !== undefined) currentResourcepack.cursorInteractiveHotspotX = resourcepackData.cursorInteractiveHotspotX;
+            if (resourcepackData.cursorInteractiveHotspotY !== undefined) currentResourcepack.cursorInteractiveHotspotY = resourcepackData.cursorInteractiveHotspotY;
+            if (resourcepackData.favicon) currentResourcepack.favicon = resourcepackData.favicon;
+            
+            localStorage.setItem("customResourcepack", JSON.stringify(currentResourcepack));
+            
+            applyResourcepack();
+            showBonusText('Resourcepack loaded ✅');
+        } catch (error) {
+            showBonusText('Error: Invalid JSON file ❌');
+            console.error('Error loading resourcepack:', error);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function loadResourcepackFromZip(file) {
+    JSZip.loadAsync(file).then(function(zip) {
+        return zip.file('pack.json').async('text').then(function(packJsonContent) {
+            const packData = JSON.parse(packJsonContent);
+            const resourcepackData = {};
+            
+            const filePromises = [];
+            
+            const loadResource = (resourcePath, fieldName) => {
+                if (packData[fieldName]) {
+                    const promise = zip.file(packData[fieldName]).async('blob').then(blob => {
+                        const blobUrl = URL.createObjectURL(blob);
+                        resourcepackData[fieldName] = blobUrl;
+                    });
+                    filePromises.push(promise);
+                }
+            };
+            
+            loadResource('appleImage', 'appleImage');
+            loadResource('goldenAppleImage', 'goldenAppleImage');
+            loadResource('sound', 'sound');
+            loadResource('cursorDefault', 'cursorDefault');
+            loadResource('cursorInteractive', 'cursorInteractive');
+            loadResource('favicon', 'favicon');
+            
+            if (packData.cursorDefaultHotspotX !== undefined) resourcepackData.cursorDefaultHotspotX = packData.cursorDefaultHotspotX;
+            if (packData.cursorDefaultHotspotY !== undefined) resourcepackData.cursorDefaultHotspotY = packData.cursorDefaultHotspotY;
+            if (packData.cursorInteractiveHotspotX !== undefined) resourcepackData.cursorInteractiveHotspotX = packData.cursorInteractiveHotspotX;
+            if (packData.cursorInteractiveHotspotY !== undefined) resourcepackData.cursorInteractiveHotspotY = packData.cursorInteractiveHotspotY;
+            
+            return Promise.all(filePromises).then(() => resourcepackData);
+        });
+    }).then(function(resourcepackData) {
+        Object.assign(currentResourcepack, resourcepackData);
+        
+        localStorage.setItem("customResourcepack", JSON.stringify(currentResourcepack));
+        
+        applyResourcepack();
+        showBonusText('Resourcepack loaded ✅');
+    }).catch(function(error) {
+        showBonusText('Error: Invalid ZIP file ❌');
+        console.error('Error loading resourcepack ZIP:', error);
+    });
+}
+
 const buildings = [
     { name: "Grandmother", description: "A nice grandmother", baseCost: 15, production: 0.1, owned: 0 },
     { name: "Farm", description: "Grows apples", baseCost: 100, production: 1, owned: 0 },
@@ -429,3 +591,16 @@ function importSave() {
         reader.readAsText(file);
     };
 }
+
+window.addEventListener('load', () => {
+    const savedResourcepack = localStorage.getItem("customResourcepack");
+    if (savedResourcepack) {
+        try {
+            currentResourcepack = JSON.parse(savedResourcepack);
+            applyResourcepack();
+        } catch (error) {
+            console.error('Error loading saved resourcepack:', error);
+            loadDefaultResourcepack();
+        }
+    }
+});

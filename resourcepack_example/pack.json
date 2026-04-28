@@ -1,0 +1,12 @@
+{
+  "appleImage": "img/pomme.png",
+  "goldenAppleImage": "img/golden_apple.png",
+  "sound": "sounds/UISoundClick.mp3",
+  "cursorDefault": "img/apple.png",
+  "cursorDefaultHotspotX": 16,
+  "cursorDefaultHotspotY": 16,
+  "cursorInteractive": "img/green_apple.png",
+  "cursorInteractiveHotspotX": 16,
+  "cursorInteractiveHotspotY": 16,
+  "favicon": "img/pomme.png"
+}
